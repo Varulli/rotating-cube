@@ -13,7 +13,7 @@ typedef struct Quaternion
 	float k;
 } Quaternion;
 
-// Hamilton product
+// Computes Hamilton product.
 Quaternion q_multiply(Quaternion q1, Quaternion q2)
 {
 	float R = q1.r * q2.r - q1.i * q2.i - q1.j * q2.j - q1.k * q2.k,
@@ -68,6 +68,7 @@ Quaternion q_rotate_about_z(Quaternion p, float angle)
 const int zDisp = 100;
 const int zProj = 50;
 
+// Light vector components
 const float xLight = 0.0F;
 const float yLight = 1.0F;
 const float zLight = -1.0F;
@@ -75,6 +76,7 @@ const float zLight = -1.0F;
 const float deltaTheta = 0.1F;
 const float deltaPhi = 0.05F;
 
+// Handles Ctrl+C by returning to main buffer before exiting.
 BOOL WINAPI HandlerRoutine(DWORD ctrlType)
 {
 	if (ctrlType == CTRL_C_EVENT)
@@ -86,6 +88,7 @@ BOOL WINAPI HandlerRoutine(DWORD ctrlType)
 	return FALSE;
 }
 
+// Rotates a point and projects it.
 void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, char **proj, float **zVal, float ooMagLight)
 {
 	q = q_rotate_about_z(q_rotate_about_y(q_rotate_about_x(q, A), B), C);
@@ -117,6 +120,7 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 
 int main(int argc, char *argv[])
 {
+	// Set up console
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD mode;
 	if (GetConsoleMode(console, &mode))
@@ -125,15 +129,14 @@ int main(int argc, char *argv[])
 	}
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 
+	// Allocate projection buffers
 	char **proj = calloc(HEIGHT, sizeof(char *));
 	float **zVal = calloc(HEIGHT, sizeof(float *));
-
 	if (proj == NULL || zVal == NULL)
 	{
 		fprintf(stderr, "Error: Failed memory allocation\n");
 		return 1;
 	}
-
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		proj[i] = calloc(WIDTH, sizeof(char));
@@ -146,10 +149,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// Initial rotation angles
 	float A = 0.0F, B = 0.0F, C = 0.0F;
 
 	float ooMagLight = 1 / sqrtf(xLight * xLight + yLight * yLight + zLight * zLight);
 
+	// Set duration
 	double duration = 15.0;
 	if (argc == 2)
 	{
@@ -168,11 +173,13 @@ int main(int argc, char *argv[])
 		return 3;
 	}
 
+	// Use alternate buffer
 	printf("\x1b[?1049h\x1b[?25l");
 	fflush(stdout);
 
 	for (time_t start = time(NULL); difftime(time(NULL), start) < duration;)
 	{
+		// Clear projection buffers
 		for (int i = 0; i < HEIGHT; i++)
 		{
 			for (int j = 0; j < WIDTH; j++)
@@ -182,6 +189,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
+		// Render points along each face of cube
 		for (int x = -25; x < 25; x++)
 			for (int y = -25; y < 25; y++)
 			{
@@ -190,7 +198,6 @@ int main(int argc, char *argv[])
 
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
-
 		for (int x = -25; x < 25; x++)
 			for (int y = -25; y < 25; y++)
 			{
@@ -199,7 +206,6 @@ int main(int argc, char *argv[])
 
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
-
 		for (int x = -25; x < 25; x++)
 			for (int z = -25; z < 25; z++)
 			{
@@ -208,7 +214,6 @@ int main(int argc, char *argv[])
 
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
-
 		for (int x = -25; x < 25; x++)
 			for (int z = -25; z < 25; z++)
 			{
@@ -217,7 +222,6 @@ int main(int argc, char *argv[])
 
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
-
 		for (int y = -25; y < 25; y++)
 			for (int z = -25; z < 25; z++)
 			{
@@ -226,7 +230,6 @@ int main(int argc, char *argv[])
 
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
-
 		for (int y = -25; y < 25; y++)
 			for (int z = -25; z < 25; z++)
 			{
@@ -236,6 +239,7 @@ int main(int argc, char *argv[])
 				render_point(q, qNorm, A, B, C, proj, zVal, ooMagLight);
 			}
 
+		// Display cube
 		char str[HEIGHT * (WIDTH + 1) + 1] = {0};
 		for (int i = 0; i < HEIGHT; i++)
 		{
@@ -248,6 +252,7 @@ int main(int argc, char *argv[])
 		printf("%s\x1b[H", str);
 		fflush(stdout);
 
+		// Rotate cube
 		A += 0.006F, B += 0.008F, C += 0.01F;
 	}
 	printf("Press Enter to Return");
