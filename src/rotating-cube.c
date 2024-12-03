@@ -3,6 +3,7 @@
 #include <string.h>
 #include <Windows.h>
 #include <math.h>
+#include <time.h>
 
 typedef struct Quaternion
 {
@@ -61,10 +62,8 @@ Quaternion q_rotate_about_z(Quaternion p, float angle)
 }
 
 // Screen resolution
-#define WIDTH 100
-#define HEIGHT 50
-
-#define NUM_FRAMES 1500
+#define WIDTH 60
+#define HEIGHT 30
 
 const int zDisp = 100;
 const int zProj = 50;
@@ -116,7 +115,7 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 	}
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD mode;
@@ -131,7 +130,7 @@ int main()
 
 	if (proj == NULL || zVal == NULL)
 	{
-		printf("Failed memory allocation\n");
+		fprintf(stderr, "Error: Failed memory allocation\n");
 		return 1;
 	}
 
@@ -142,7 +141,7 @@ int main()
 
 		if (proj[i] == NULL || zVal[i] == NULL)
 		{
-			printf("Failed memory allocation\n");
+			fprintf(stderr, "Error: Failed memory allocation\n");
 			return 1;
 		}
 	}
@@ -151,10 +150,28 @@ int main()
 
 	float ooMagLight = 1 / sqrtf(xLight * xLight + yLight * yLight + zLight * zLight);
 
+	double duration = 15.0;
+	if (argc == 2)
+	{
+		duration = strtod(argv[1], NULL);
+		if (duration <= 0)
+		{
+			fprintf(stderr, "Error: Invalid duration value (must be greater than 0)\n");
+			printf("Usage: rotating-cube [seconds]\n");
+			return 2;
+		}
+	}
+	else if (argc > 2)
+	{
+		fprintf(stderr, "Error: Too many arguments\n");
+		printf("Usage: rotating-cube [seconds]\n");
+		return 3;
+	}
+
 	printf("\x1b[?1049h\x1b[?25l");
 	fflush(stdout);
 
-	for (int f = 0; f < NUM_FRAMES; f++)
+	for (time_t start = time(NULL); difftime(time(NULL), start) < duration;)
 	{
 		for (int i = 0; i < HEIGHT; i++)
 		{
