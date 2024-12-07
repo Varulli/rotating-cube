@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <Windows.h>
 #include <math.h>
 #include <time.h>
+#include "init.h"
 
 typedef struct Quaternion
 {
@@ -76,18 +76,6 @@ const float zLight = -1.0f;
 const float deltaTheta = 0.1f;
 const float deltaPhi = 0.05f;
 
-// Handles Ctrl+C by returning to main buffer before exiting.
-BOOL WINAPI HandlerRoutine(DWORD ctrlType)
-{
-	if (ctrlType == CTRL_C_EVENT)
-	{
-		printf("\x1b[?25h\x1b[?1049l");
-		fflush(stdout);
-		exit(0);
-	}
-	return FALSE;
-}
-
 // Rotates a point and projects it.
 void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, char **proj, float **zVal, float ooMagLight)
 {
@@ -120,15 +108,6 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 
 int main(int argc, char *argv[])
 {
-	// Set up console
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	DWORD mode;
-	if (GetConsoleMode(console, &mode))
-	{
-		SetConsoleMode(console, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-	}
-	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
-
 	// Allocate projection buffers
 	char **proj = calloc(HEIGHT, sizeof(char *));
 	float **zVal = calloc(HEIGHT, sizeof(float *));
