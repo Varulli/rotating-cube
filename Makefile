@@ -13,15 +13,17 @@ SOURCES=$(SRCDIR)/rotating-cube.c
 ifeq ($(OS),Windows_NT)
 	SOURCES+= $(SRCDIR)/init-win.c
 	SLASH=\\
-	RM = del /q
-	RMDIR = del /s /q
-	EXEC = rotating-cube.exe
+	RM=del /q
+	RMDIR=del /s /q
+	EXEC=rotating-cube.exe
+	MKDIR=-mkdir obj > nul 2>&1
 else
 	SOURCES+= $(SRCDIR)/init-pos.c
 	SLASH=/
-	RM = rm -f
-	RMDIR = rm -rf
-	EXEC = rotating-cube
+	RM=rm -f
+	RMDIR=rm -rf
+	EXEC=rotating-cube
+	MKDIR=mkdir -p obj
 endif
 OBJECTS=$(addprefix $(OBJDIR)$(SLASH),$(notdir $(SOURCES:.c=.o)))
 
@@ -31,6 +33,7 @@ rotating-cube: $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(OBJDIR)$(SLASH)%.o: $(SRCDIR)/%.c
+	$(MKDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
