@@ -1,31 +1,36 @@
+CC=gcc
+OPTS=-O2 -Wall -Werror -Wno-error=unused-variable -Wno-error=unused-function
+DEBUG=-g
+
 SRCDIR=src
 OBJDIR=obj
+INCDIR=inc
 
-CC=gcc
-OPTS=-O2 -g -Wall -Werror -Wno-error=unused-variable -Wno-error=unused-function
-CFLAGS=$(OPTS)
+INCLUDE=$(addprefix -I,$(INCDIR))
+CFLAGS=$(OPTS) $(INCLUDE) $(DEBUG)
 
-NAME=rotating-cube
-
+SOURCES=$(SRCDIR)/rotating-cube.c
 ifeq ($(OS),Windows_NT)
+	SOURCES+= $(SRCDIR)/init-win.c
 	RM = del /q
 	RMDIR = del /s /q
-	OBJECTS = $(OBJDIR)\*.o
-	EXEC = $(NAME).exe
+	EXEC = rotating-cube.exe
 else
+	SOURCES+= $(SRCDIR)/init-pos.c
 	RM = rm -f
 	RMDIR = rm -rf
 	OBJECTS = $(OBJDIR)/*.o
-	EXEC = $(NAME)
+	EXEC = rotating-cube
 endif
+OBJECTS=$(addprefix $(OBJDIR)/,$(notdir $(SOURCES:.c=.o)))
 
-all: $(NAME)
+all: rotating-cube
 
-$(NAME): $(OBJDIR)/$(NAME).o
+rotating-cube: $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJDIR)/$(NAME).o: $(SRCDIR)/$(NAME).c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	$(RMDIR) $(OBJECTS)
