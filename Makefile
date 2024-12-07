@@ -12,24 +12,25 @@ CFLAGS=$(OPTS) $(INCLUDE) $(DEBUG)
 SOURCES=$(SRCDIR)/rotating-cube.c
 ifeq ($(OS),Windows_NT)
 	SOURCES+= $(SRCDIR)/init-win.c
+	SLASH=\\
 	RM = del /q
 	RMDIR = del /s /q
 	EXEC = rotating-cube.exe
 else
 	SOURCES+= $(SRCDIR)/init-pos.c
+	SLASH=/
 	RM = rm -f
 	RMDIR = rm -rf
-	OBJECTS = $(OBJDIR)/*.o
 	EXEC = rotating-cube
 endif
-OBJECTS=$(addprefix $(OBJDIR)/,$(notdir $(SOURCES:.c=.o)))
+OBJECTS=$(addprefix $(OBJDIR)$(SLASH),$(notdir $(SOURCES:.c=.o)))
 
 all: rotating-cube
 
 rotating-cube: $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)$(SLASH)%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
