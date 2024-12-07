@@ -155,9 +155,9 @@ int main(int argc, char *argv[])
 	float A = 0.0f, B = 0.0f, C = 0.0f;
 
 	// Rotation angle increments
-	float incA = 0.003f * (rand() % 151 + 50) / 50.0f;
-	float incB = 0.003f * (rand() % 151 + 50) / 50.0f;
-	float incC = 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incA = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incB = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incC = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
 
 	float ooMagLight = 1 / sqrtf(xLight * xLight + yLight * yLight + zLight * zLight);
 
