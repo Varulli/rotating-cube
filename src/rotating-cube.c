@@ -110,7 +110,7 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 			if (L > 0)
 			{
 				int indexL = (int)(L * 10);
-				proj[yProj][xProj] = ".,-~:;+*#@"[indexL];
+				proj[yProj][xProj] = "`.:-=+*#%@"[indexL];
 			}
 			else
 				proj[yProj][xProj] = ' ';
