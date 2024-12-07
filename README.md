@@ -9,7 +9,7 @@ A render of a cube rotating in space with a light source.
 ### Requirements
 
 - gcc
-- make
+- Make
 - Windows environment
 
 ### Basic Usage
