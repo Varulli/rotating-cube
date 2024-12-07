@@ -27,7 +27,7 @@ Quaternion q_multiply(Quaternion q1, Quaternion q2)
 
 Quaternion q_rotate_about_x(Quaternion p, float angle)
 {
-	float half = angle * 0.5F,
+	float half = angle * 0.5f,
 		  cosa = cosf(half),
 		  sina = sinf(half);
 
@@ -39,7 +39,7 @@ Quaternion q_rotate_about_x(Quaternion p, float angle)
 
 Quaternion q_rotate_about_y(Quaternion p, float angle)
 {
-	float half = angle * 0.5F,
+	float half = angle * 0.5f,
 		  cosa = cosf(half),
 		  sina = sinf(half);
 
@@ -51,7 +51,7 @@ Quaternion q_rotate_about_y(Quaternion p, float angle)
 
 Quaternion q_rotate_about_z(Quaternion p, float angle)
 {
-	float half = angle * 0.5F,
+	float half = angle * 0.5f,
 		  cosa = cosf(half),
 		  sina = sinf(half);
 
@@ -69,12 +69,12 @@ const int zDisp = 100;
 const int zProj = 50;
 
 // Light vector components
-const float xLight = 0.0F;
-const float yLight = 1.0F;
-const float zLight = -1.0F;
+const float xLight = 0.0f;
+const float yLight = 1.0f;
+const float zLight = -1.0f;
 
-const float deltaTheta = 0.1F;
-const float deltaPhi = 0.05F;
+const float deltaTheta = 0.1f;
+const float deltaPhi = 0.05f;
 
 // Handles Ctrl+C by returning to main buffer before exiting.
 BOOL WINAPI HandlerRoutine(DWORD ctrlType)
@@ -96,8 +96,8 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 
 	float ooz = 1 / (q.k + zDisp);
 
-	int xProj = (int)(WIDTH * 0.5F + q.i * zProj * ooz),
-		yProj = (int)(HEIGHT * 0.5F - q.j * zProj * ooz * 0.5F);
+	int xProj = (int)(WIDTH * 0.5f + q.i * zProj * ooz),
+		yProj = (int)(HEIGHT * 0.5f - q.j * zProj * ooz * 0.5f);
 
 	if (xProj >= 0 && xProj < WIDTH && yProj >= 0 && yProj < HEIGHT)
 	{
@@ -149,13 +149,20 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	srand(time(NULL));
+
 	// Initial rotation angles
-	float A = 0.0F, B = 0.0F, C = 0.0F;
+	float A = 0.0f, B = 0.0f, C = 0.0f;
+
+	// Rotation angle increments
+	float incA = 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incB = 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incC = 0.003f * (rand() % 151 + 50) / 50.0f;
 
 	float ooMagLight = 1 / sqrtf(xLight * xLight + yLight * yLight + zLight * zLight);
 
 	// Set duration
-	double duration = 15.0;
+	double duration = 10.0;
 	if (argc == 2)
 	{
 		duration = strtod(argv[1], NULL);
@@ -185,7 +192,7 @@ int main(int argc, char *argv[])
 			for (int j = 0; j < WIDTH; j++)
 			{
 				proj[i][j] = ' ';
-				zVal[i][j] = 0.0F;
+				zVal[i][j] = 0.0f;
 			}
 		}
 
@@ -253,7 +260,9 @@ int main(int argc, char *argv[])
 		fflush(stdout);
 
 		// Rotate cube
-		A += 0.006F, B += 0.008F, C += 0.01F;
+		A += incA;
+		B += incB;
+		C += incC;
 	}
 	printf("Press Enter to Return");
 	fflush(stdout);
