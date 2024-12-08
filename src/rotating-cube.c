@@ -135,9 +135,24 @@ int main(int argc, char *argv[])
 	float A = 0.0f, B = 0.0f, C = 0.0f;
 
 	// Rotation angle increments
-	float incA = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
-	float incB = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
-	float incC = (-1 * rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incA = powf(-1, rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incB = powf(-1, rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+	float incC = powf(-1, rand() % 2) * 0.003f * (rand() % 151 + 50) / 50.0f;
+
+	// Kill angle increments at random
+	float *incs[] = {&incA, &incB, &incC};
+	switch (rand() % 5)
+	{
+	case 0: // Kill one angle
+		*incs[rand() % 3] = 0;
+		break;
+	case 1: // Kill two angles
+		int r = rand() % 3;
+		*incs[r] = 0;
+		*incs[(r + 1) % 3] = 0;
+	default:
+		break;
+	}
 
 	float ooMagLight = 1 / sqrtf(xLight * xLight + yLight * yLight + zLight * zLight);
 
