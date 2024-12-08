@@ -10,10 +10,10 @@ A render of a cube rotating in space with a light source.
 
 - gcc
 - Make
-- Windows environment
 
 ### Basic Usage
 
 ```
+make
 ./rotating-cube [seconds]
 ```
