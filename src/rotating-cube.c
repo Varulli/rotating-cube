@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include <Windows.h>
 #include <math.h>
 #include <time.h>
 #include "init.h"
@@ -13,7 +10,9 @@ typedef struct Quaternion
 	float k;
 } Quaternion;
 
-// Computes Hamilton product.
+/**
+ * Computes Hamilton product.
+ */
 Quaternion q_multiply(Quaternion q1, Quaternion q2)
 {
 	float R = q1.r * q2.r - q1.i * q2.i - q1.j * q2.j - q1.k * q2.k,
