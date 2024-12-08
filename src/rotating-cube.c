@@ -108,6 +108,8 @@ void render_point(Quaternion q, Quaternion qNorm, float A, float B, float C, cha
 
 int main(int argc, char *argv[])
 {
+	initialize();
+
 	// Allocate projection buffers
 	char **proj = calloc(HEIGHT, sizeof(char *));
 	float **zVal = calloc(HEIGHT, sizeof(float *));

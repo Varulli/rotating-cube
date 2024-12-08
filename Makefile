@@ -30,7 +30,7 @@ OBJECTS=$(addprefix $(OBJDIR)$(SLASH),$(notdir $(SOURCES:.c=.o)))
 all: rotating-cube
 
 rotating-cube: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) -o $@ $^ -lm
 
 $(OBJDIR)$(SLASH)%.o: $(SRCDIR)/%.c
 	$(MKDIR)
