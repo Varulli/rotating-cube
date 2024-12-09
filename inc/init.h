@@ -3,11 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <signal.h>
-#endif
 
 /**
  * Initializes program to handle Ctrl+C.
