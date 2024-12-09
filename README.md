@@ -15,5 +15,5 @@ A render of a cube rotating in space with a light source.
 
 ```
 make
-./rotating-cube [seconds]  # Runs for some time (default: 10)
+rotating-cube [seconds]  # Runs for some time (default: 10)
 ```
