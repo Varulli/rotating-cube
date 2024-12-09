@@ -9,33 +9,36 @@ INCDIR=inc
 INCLUDE=$(addprefix -I,$(INCDIR))
 CFLAGS=$(OPTS) $(INCLUDE) $(DEBUG)
 
-SOURCES=$(SRCDIR)/rotating-cube.c
+TARGET=rotating-cube
+
+SRCS=$(TARGET).c
 ifeq ($(OS),Windows_NT)
-	SOURCES+= $(SRCDIR)/init-win.c
-	SLASH=\\
+	SRCS+=init-win.c
 	RM=del /q
 	RMDIR=del /s /q
-	EXEC=rotating-cube.exe
-	MKDIR=-mkdir obj > nul 2>&1
+	EXEC=$(TARGET).exe
+	MKDIR=-mkdir $(OBJDIR) > nul 2>&1
 else
-	SOURCES+= $(SRCDIR)/init-pos.c
-	SLASH=/
+	SRCS+=init-pos.c
 	RM=rm -f
 	RMDIR=rm -rf
-	EXEC=rotating-cube
-	MKDIR=mkdir -p obj
+	EXEC=$(TARGET)
+	MKDIR=mkdir -p $(OBJDIR)
 endif
-OBJECTS=$(addprefix $(OBJDIR)$(SLASH),$(notdir $(SOURCES:.c=.o)))
+SOURCES=$(addprefix $(SRCDIR)/,$(SRCS))
+OBJECTS=$(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 
-all: rotating-cube
+all: $(OBJDIR) $(TARGET)
 
-rotating-cube: $(OBJECTS)
+$(OBJDIR):
+	$(MKDIR)
+
+$(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ -lm
 
-$(OBJDIR)$(SLASH)%.o: $(SRCDIR)/%.c
-	$(MKDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	$(RMDIR) $(OBJECTS)
+	$(RMDIR) $(OBJDIR)
 	$(RM) $(EXEC)
