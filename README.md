@@ -14,7 +14,8 @@ A render of a cube rotating in space with a light source.
 ```
 git clone https://github.com/Varulli/rotating-cube.git
 cd rotating-cube
-mkdir build && cd build
+mkdir build
+cd build
 cmake ..
 cmake --build .
 ```
