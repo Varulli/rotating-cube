@@ -7,7 +7,7 @@ A render of a cube rotating in space with a light source.
 ## Build Instructions
 
 ### Requirements
-- C compiler (GCC, MSVC, Clang, etc.)
+- C compiler
 - CMake 3.5+
 
 ### Steps
@@ -21,6 +21,7 @@ cmake --build .
 ```
 
 ## Usage
+Run executable directly, or:
 ```
 rotating-cube [seconds]  # Runs for some time (default: 10)
 ```
