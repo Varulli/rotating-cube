@@ -9,8 +9,7 @@ if(WIN32)
     target_sources(${PROJECT_NAME} PRIVATE src/init-win.c)
 elseif(UNIX)
     target_sources(${PROJECT_NAME} PRIVATE src/init-pos.c)
+    target_link_libraries(${PROJECT_NAME} PRIVATE m)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE "inc")
-
-target_link_libraries(${PROJECT_NAME} PRIVATE m)
