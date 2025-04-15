@@ -2,6 +2,8 @@
 
 A render of a cube rotating in space with a light source.
 
+Download the [latest release](https://github.com/Varulli/rotating-cube/releases/latest) or [build it yourself](https://github.com/Varulli/rotating-cube#build-instructions).
+
 ![rotating-cube-demo](https://github.com/user-attachments/assets/0fa36bd2-5856-481d-a5e7-215bd7238720)
 
 ## Build Instructions
