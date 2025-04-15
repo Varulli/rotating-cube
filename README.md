@@ -23,5 +23,5 @@ cmake --build .
 ## Usage
 Run executable directly, or:
 ```
-rotating-cube [seconds]  # Runs for some time (default: 10)
+./rotating-cube [seconds]  # Runs for some time (default: 10)
 ```
